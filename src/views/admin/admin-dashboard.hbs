@@ -1,0 +1,521 @@
+
+<style>
+
+
+.Button {
+  position: relative;
+  top: 0px;
+  padding: 5px 23px;
+  border: solid #1a1a1a 3px;
+  border-radius: 10px;
+  margin: 10px;
+  box-shadow: 0px 10px 0px #1a1a1a;
+}
+
+.Button:hover {
+  top: 2px;
+  box-shadow: 0px 8px 0px #1a1a1a;
+}
+.Button:active {
+  transition: 100ms ease;
+  top: 8px;
+  box-shadow: 0px 2px 0px #1a1a1a;
+}
+.Red {
+  background: #d22b2b;
+}
+.Red:hover {
+  background: #c21b2b;
+}
+.Red:active {
+  background: #b20b2b;
+}
+</style>
+
+<body>
+    <div >
+        <!-- Content Start -->
+     
+
+            <!-- Sale & Revenue Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="row g-4">
+                    <div class="col-sm-6 col-xl-3">
+                        <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+                            <i class="fa fa-chart-line fa-3x text-primary"></i>
+                            <div class="ms-3">
+                                <p class="mb-2">monthly Sale</p>
+                                <h6 class="mb-0">Rs.{{monthlySale}}</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xl-3">
+                        <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+                            <i class="fa fa-chart-bar fa-3x text-primary"></i>
+                            <div class="ms-3">
+                                <p class="mb-2">Total Sale</p>
+                                <h6 class="mb-0">Rs.{{total.totalSale}}</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xl-3">
+                        <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+                            <i class="fa fa-chart-area fa-3x text-primary"></i>
+                            <div class="ms-3">
+                                <p class="mb-2">Total Orders</p>
+                                <h6 class="mb-0">{{totalOrders}}</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xl-3">
+                        <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+                            <i class="fa fa-chart-pie fa-3x text-primary"></i>
+                            <div class="ms-3">
+                                <p class="mb-2">Total Customers</p>
+                                <h6 class="mb-0">{{totalUsers}}</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Sale & Revenue End -->
+
+
+            <!-- Sales Chart Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="row g-4">
+                    <div class="col-sm-12 col-xl-6">
+                        <div class="bg-secondary text-center rounded p-4">
+                            <div class="d-flex align-items-center justify-content-between mb-4">
+                                <h6 class="mb-0">Today Sales</h6>
+                                {{!-- <a href="">Show All</a> --}}
+                            </div>
+                            <canvas id="myChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-xl-6">
+                        <div class="bg-secondary text-center rounded p-4">
+                            <div class="d-flex align-items-center justify-content-between mb-4">
+                                <h6 class="mb-0">Monthly Sales</h6>
+                                {{!-- <a href="">Show All</a> --}}
+                            </div>
+                            <canvas id="myChart2"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container-fluid pt-4 px-4">
+                <div class="row g-4">
+                    <div class="col-sm-12 col-xl-6">
+                        <div class="bg-secondary text-center rounded p-4">
+                            <div class="d-flex align-items-center justify-content-between mb-4">
+                                <h6 class="mb-0">Worldwide Sales</h6>
+                                {{!-- <a href="">Show All</a> --}}
+                            </div>
+                            <canvas id="myChart3"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-xl-6">
+                        <div class="bg-secondary text-center rounded p-4">
+                            <div class="d-flex align-items-center justify-content-between mb-4">
+                                <h6 class="mb-0">Yearly Sales</h6>
+                                {{!-- <a href="">Show All</a> --}}
+                            </div>
+                            <canvas id="myChart4"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Sales Chart End -->
+
+
+            <!-- Recent Sales Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="bg-secondary text-center rounded p-4">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <h6 class="mb-0">Recent Salse</h6>
+                        {{!-- <h6 class="mr">sales report</h6> --}}
+                        {{!-- <h3 >Sales report</h3> --}}
+                        <a class="ml-auto">Sales report</a>
+                        {{!-- <button type="button"  id="btnExport" value="Export" onclick="Export()">pdf</button> --}}
+                        <button class="Button Red" type="button"  id="btnExport" value="Export" onclick="Export()" >pdf</button>
+                        <button class="Button Red" type="submit"  onclick="exportTableToExcel('tableData')">exel</button>
+                        {{!-- <button type="submit"  onclick="exportTableToExcel('tableData')">exel</button> --}}
+                        <a href="/admin/orders-admin">Show All</a>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table text-start align-middle table-bordered table-hover mb-0">
+                            <thead>
+                                <tr class="text-white">
+                                    <th scope="col"><input class="form-check-input" type="checkbox"></th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Customer</th>
+                                    <th scope="col">Amount</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">payment mode</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#each orders}}
+                                <tr>
+                                    <td><input class="form-check-input" type="checkbox"></td>
+                                    <td>{{this.date}}</td>
+                                    <td>{{this.deliveryDetails.name}}</td>
+                                    <td>{{this.totalAmount}}</td>
+                                    <td>{{this.status}}</td>
+                                    <td>{{this.PaymentMethod}}</td>
+                                    <td><a class="btn btn-sm btn-primary" href="/admin/view-users-products/{{this._id}}">Detail</a></td>
+                                </tr>
+                                {{/each}}
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- Recent Sales End -->
+
+
+            
+ 
+        <!-- Content End -->
+
+
+        <section >
+    <div   class="table-responsive" hidden>
+        <table  class="table text-start align-middle table-bordered table-hover mb-0" id="tableData" >
+            <thead>
+                <tr>
+                    <th rowspan="2">No</th>
+                    <th rowspan="2">date</th>
+                    <th rowspan="2">name</th>
+                    <th rowspan="2">address</th>
+                    <th colspan="2">Items</th>
+                    <th rowspan="2">mobile</th>
+                    <th rowspan="2">payment Method</th>
+                    <th rowspan="2">Amount</th>
+                </tr>
+                <tr>
+                    <td>product</td>
+                    <td>Quanitity</td>
+                </tr>
+            </thead>
+            <tbody class=" fw-bold fs-7">
+                {{#each order}}
+                <tr>
+                    <td ><span class="create_index"></span></td>
+                    <td>{{this.date}}</td>
+                    <td>{{this.deliveryDetails.name}}</td>           
+                    <td>{{this.deliveryDetails.address}} {{this.deliveryDetails.pincode}} {{this.deliveryDetails.state}}</td>
+                    <td>{{#each products}}
+                        {{this.name}}
+                        {{/each}}
+                    </td>
+                    <td>{{#each products}}
+                        {{this.quantity}} <br>
+                        {{/each}}
+                    </td>                    
+                    <td>{{this.deliveryDetails.mobile}}</td>
+                    <td>{{this.PaymentMethod}}</td>
+                    <td>Rs.{{this.totalAmount}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</section>
+        <!-- Back to Top -->
+        {{!-- <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a> --}}
+    </div>
+    <!-- Template Javascript -->
+</body>
+
+
+
+
+
+
+{{!-- <script  src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.6/pdfmake.min.js"> </script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.22/pdfmake.min.js"></script> --}}
+
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.22/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+
+{{!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script> --}}
+
+{{!-- another pdf link --}}
+{{!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script> --}}
+
+<script>
+    var divs = document.querySelectorAll('.create_index');
+    for (var i = 0; i < divs.length; ++i) {
+        divs[i].innerHTML = i + 1;
+    }
+</script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+{{!-- ==================  chart 1================= --}}
+<script>
+    let day=[];
+        console.log('lllllllllllllllllllllllllllllllllll')
+        let demo=[];
+        {{#each getmonths}}    
+            demo.unshift('{{this.month}}')
+        {{/each}} 
+        let a=demo.length
+      console.log(demo[a-1])
+      var num=demo[a-1];
+
+      let demo2=[];
+      {{#each getYears}}
+            demo2.unshift('{{this.year}}')
+      {{/each}}
+      let b=demo2.length
+      console.log(demo2[b-1])
+      var num2=demo2[b-1]
+
+      
+
+    {{#each getDays}}
+      day.unshift('{{this.day}}/'+num+'/'+num2)
+    {{/each}}
+    
+    let priceDay=[]
+    {{#each getDays}}
+    priceDay.unshift('{{this.totalSaleDay}}')
+    {{/each}}
+    console.log('watch')
+    console.log(priceDay)
+
+
+
+
+new Chart("myChart", {
+  type: "line",
+        data: {
+            labels: day,
+            datasets: [{
+                    label: "daily sales",
+                    data: priceDay,          
+                    backgroundColor: '#D2042D',
+                    borderColor:'#D2042D'
+                }]
+            },
+        options: {
+            responsive: true
+        }
+});
+
+</script>
+    <script>
+  const myChart = new Chart(
+    document.getElementById('myChart'),
+    config
+  );
+</script>
+
+
+{{!-- =========================== chart 2 =================== --}}
+<script>
+    let month=[];
+    {{#each getmonths}}
+      month.unshift('{{this.month}}')
+    {{/each}} 
+    
+    let price=[]
+    {{#each getmonths}}
+    price.unshift('{{this.totalSale}}')
+    {{/each}}
+
+
+new Chart("myChart2", {
+  type: "line",
+        data: {
+            labels: month,
+            datasets: [{
+                    label: "monthly sales",
+                    data: price,          
+                    backgroundColor: '#D2042D',
+                    borderColor:'#D2042D'
+                }]
+            },
+        options: {
+            responsive: true
+        }
+});
+
+</script>
+    <script>
+  const myChart2 = new Chart(
+    document.getElementById('myChart'),
+    config
+  );
+</script>
+
+{{!-- =========================== chart 3 =================== --}}
+
+<script>
+
+   var yValues = [{{status.placedNo}},{{status.deliveredNo}},{{status.shippedNo}},{{status.cancelledNo}}];
+
+new Chart("myChart3", {
+  type: "bar",
+        data: {
+            labels: ["placed", "deliverd", "shipped", "cancelled"],
+            datasets: [{
+                    label: "status",
+                    data: yValues,          
+                    backgroundColor: '#D2042D',
+                    borderColor:'#D2042D'
+                }]
+            },
+        options: {
+            responsive: true
+        }
+});
+
+</script>
+ <script>
+  const myChart3 = new Chart(
+    document.getElementById('myChart3'),
+    config
+  );
+</script>
+
+
+
+
+{{!-- =========================== chart 4 ===================== --}}
+
+<script>
+    let year=[];
+    {{#each getYears}}
+      year.unshift('{{this.year}}')
+    {{/each}}
+    
+    let priceYear=[]
+    {{#each getYears}}
+    priceYear.unshift('{{this.totalSaleYear}}')
+    {{/each}}
+
+
+new Chart("myChart4", {
+  type: "line",
+        data: {
+            labels: year,
+            datasets: [{
+                    label: "yearly sales",
+                    data: priceYear,          
+                    backgroundColor: '#D2042D',
+                   // borderColor: 'rgb(255, 99, 132)',
+                    borderColor:'#D2042D'
+                }]
+            },
+        options: {
+            responsive: true
+        }
+});
+
+</script>
+    <script>
+  const myChart4 = new Chart(
+    document.getElementById('myChart4'),
+    config
+  );
+</script>
+
+<script>
+    function exportTableToExcel(tableData, filename = 'order details'){
+    var downloadLink;
+    var dataType = 'application/vnd.ms-excel';
+    var tableSelect = document.getElementById(tableData);
+    var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
+    
+    // Specify file name
+    filename = filename?filename+'.xls':'excel_data.xls';
+    
+    // Create download link element
+    downloadLink = document.createElement("a");
+    
+    document.body.appendChild(downloadLink);
+    
+    if(navigator.msSaveOrOpenBlob){
+        var blob = new Blob(['\ufeff', tableHTML], {
+            type: dataType
+        });
+        navigator.msSaveOrOpenBlob( blob, filename);
+    }else{
+        // Create a link to the file
+        downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
+    
+        // Setting the file name
+        downloadLink.download = filename;
+
+        //triggering the function
+        downloadLink.click();
+    }
+}
+</script>
+    
+    <script>
+        function Export() {
+            html2canvas(document.getElementById('tableData'), {
+                onrendered: function (canvas) {
+                    var data = canvas.toDataURL("/admin/admin-dashboard");
+                    var docDefinition = {
+                        content: [{
+                            image: data,
+                            width: 500
+                        }]
+                    };
+                    pdfMake.createPdf(docDefinition).download("Table.pdf");
+                }
+            });
+        }
+    </script>
+
+    {{!-- <script>
+      function Export(){
+        console.log('1')
+             document.getElementById('tableData').addEventListener('click', function(){
+      var doc = new jsPDF('p', 'pt', 'letter');
+      var htmlstring = '';
+      var tempVarToCheckPageHeight = 0;
+      var pageHeight = 0;
+      pageHeight = doc.internal.pageSize.height;
+      specialElementHandlers = {
+          // element with id of "bypass" - jQuery style selector  
+          '#bypassme': function (element, renderer) {
+              // true = "handled elsewhere, bypass text extraction"  
+              return true
+          }
+      };
+      margins = {
+          top: 150,
+          bottom: 60,
+          left: 40,
+          right: 40,
+          width: 600
+      };
+      var y = 20;
+      doc.setLineWidth(2);
+      //doc.text(200, y = y + 30, "TOTAL MARKS OF STUDENTS");
+      doc.autoTable({
+          html: '#tableData',
+          startY: 70,
+          theme: 'grid',
+
+          styles: {
+              minCellHeight: 10
+          }
+      })
+      doc.save('file.pdf');
+  })
+      }
+    </script>
+ --}}

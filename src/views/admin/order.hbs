@@ -1,0 +1,96 @@
+<section>
+    <div class="container">
+        <table class="table mt-4" id="usersTable">
+            <thead>
+                <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">date</th>
+                    <th scope="col">name</th>
+                    <th scope="col">address</th>
+                    <th scope="col">user info</th>
+                    <th scope="col">payment Method</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">status</th> 
+                    <th scope="col">Products</th>
+                    <th scope="col">userInfo</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each order}}
+                <tr>
+                    <td ><span class="create_index"></span></td>
+                    <td>{{this.date}}</td>
+                    <td> {{this.deliveryDetails.name}}</td>           
+                    <td>{{this.deliveryDetails.address}} <br> {{this.deliveryDetails.pincode}} <br>  {{this.deliveryDetails.state}}</td>
+                    <td>{{this.deliveryDetails.email}} <br> {{this.deliveryDetails.mobile}}</td>
+                    <td>{{this.PaymentMethod}}</td>
+                    <td>Rs.{{this.totalAmount}}</td>
+                    <td >
+                     <select class="form-select selectTagValue" name="status" id="{{this._id}}" onchange="changeStatus('{{this._id}}')" >
+                        <option value={{this.status}}  selected>{{this.status}}</option>
+                        <option value="" class="placed">placed</option>
+                        <option value="" class="shipped">shipped</option>
+                        <option value="" class="delivered">out of delivered</option> 
+                        <option value="" class="cancelled">cancelled</option>
+                    </select> 
+                    <span class="spanStatus" style="display:none;">{{this.status}}</span>
+                    </td>
+                    <td> <a href="/admin/view-ordered-products-admin/{{this._id}}"  class="btn text-white bg-dark border-0" >products</a> </td>      
+                    <td> <a href="/admin/view-ordered-users-admin/{{this._id}}"  class="btn text-white bg-dark border-0" >user Info</a> </td>                          
+                    {{!-- <td> <a href="/cancel-order-admin/{{this._id}}" class="btn" style="color: red;" onclick="return confirm('Are you want to delete {{this.name}} user')">Cancel Order</a></td> --}}
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+
+<script>
+     var divs = document.querySelectorAll('.create_index');
+     for (var i = 0; i < divs.length; ++i) {
+        divs[i].innerHTML = i + 1;
+    }
+
+
+    //let selectTag=document.querySelectorAll(".selectTagValue")
+    //let spanStatus=document.querySelectorAll(".spanStatus")
+    //let delivered=document.querySelectorAll(".delivered")
+    //let shipped=document.querySelectorAll(".shipped")
+    //let placed=document.querySelectorAll(".placed")
+    //let cancelled=document.querySelectorAll(".cancelled")
+    //
+    //for(let i=0;i<selectTag.length;i++){
+    //  selectTag[i].style.display="block"
+    //  selectTagValue=selectTag[i].options[selectTag[i].selectedIndex].text
+    //  if(selectTagValue==="Cancelled" || selectTagValue==="Delivered" ){
+    //    selectTag[i].style.display="none"
+    //    spanStatus[i].style.display="inline-block"
+    //  }
+    //  if(selectTagValue==="Placed"){
+    //    placed[i].style.display="none"
+    //  }
+    //  if(selectTagValue==="Pending"){
+    //    shipped[i].style.display="none"
+    //    delivered[i].style.display="none"
+    //    placed[i].style.display="block"
+    //  }
+    //}
+
+    function changeStatus(orderId){
+            let st=document.getElementById(orderId)    
+            let stat =st.options[st.selectedIndex].text
+               $.ajax({
+            url:'/admin/change-order-status',                                                                                                   
+            data:{
+                order:orderId,
+                stat:stat
+            },
+            method: 'post',  
+            success:(response)=>{
+                console.log(response)
+            }
+
+        })
+    }   
+</script>
